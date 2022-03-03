@@ -1,0 +1,39 @@
+# Default values for akamai-uls.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+akamai:
+  eaaConnector:
+    replicaCount: 1
+    pvStorageClass: ""
+    edgerc_secret:
+      name: "akamai-edgerc"
+images:
+  ekc:
+    repository: akamai/eaa-k8s-connector
+    tag: latest
+    pullPolicy: IfNotPresent
+  dind:
+    repository: docker
+    tag: 20.10-dind
+    pullPolicy: IfNotPresent
+
+
+podAnnotations: {}
+
+resources:
+  ekc:
+    requests:
+      cpu: 10m
+      memory: 256Mi
+  dind:
+    requests:
+      cpu: 100m
+      memory: 512Mi
+
+nodeSelector: {}
+  #node-name: dind
+
+tolerations: []
+
+affinity: {}

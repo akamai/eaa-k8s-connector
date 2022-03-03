@@ -1,0 +1,83 @@
+---
+# Upload your .edgerc credentials (EAA RW Access required) using the command below
+# kubectl create secret generic akamai-edgerc -n <your namespace> --from-file=edgerc=/path/to/your/.edgerc
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata: 
+  name: eaa-k8s-connector
+spec:
+  selector:
+    matchLabels:
+      app: eaa-k8s-connector
+  replicas: 1   # Do not change this for now
+  serviceName: eaa-k8s-connector
+  template:
+    metadata:
+      labels:
+        app: eaa-k8s-connector
+    spec:
+      containers:
+        - name: ekc
+          imagePullPolicy: Always
+          image: akamai/eaa-k8s-connector:latest
+          resources:
+              requests:
+                  cpu: 10m
+                  memory: 256Mi
+          env:
+            - name: DOCKER_HOST
+              value: "tcp://localhost:2376"
+            - name: DOCKER_CERT_PATH
+              value: "/certs/client"
+            - name: DOCKER_TLS_VERIFY
+              value: "True"
+          volumeMounts:
+            - name: akamai-edgerc
+              mountPath: /opt/akamai/.edgerc
+              readOnly: True
+              subPath: data
+            - name: dind-certs
+              mountPath: /certs/
+              readOnly: true
+        - name: dind-daemon
+          image: docker:20.10-dind
+          resources:
+              requests:
+                  cpu: 20m
+                  memory: 512Mi
+          securityContext:
+              privileged: true
+          env:
+            - name: DOCKER_TLS_CERTDIR
+              value: "/certs"
+          volumeMounts:
+            - name: eaa-docker-storage
+              mountPath: /var/lib/docker
+            - name: dind-certs
+              mountPath: /certs
+              readOnly: false
+      volumes:
+        - name: eaa-docker-storage
+          persistentVolumeClaim:
+            claimName: eaa-docker-storage-claim
+        - name: akamai-edgerc
+          secret:
+            secretName: akamai-edgerc
+            items:
+              - key: edgerc
+                path: data
+        - name: dind-certs
+          emptyDir: {}
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: eaa-docker-storage-claim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 200Gi

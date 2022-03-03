@@ -1,0 +1,7 @@
+apiVersion: v2
+name: akamai-ekc
+description: Akamai EAA Kubernetes Connector
+
+type: application
+version: 0.0.2
+appVersion: 0.0.1

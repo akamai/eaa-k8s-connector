@@ -1,0 +1,86 @@
+---
+# Upload your .edgerc credentials (EAA RW Access required) using the command below
+# kubectl create secret generic akamai-edgerc -n <your namespace> --from-file=edgerc=/path/to/your/.edgerc
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}
+spec:
+  selector:
+    matchLabels:
+      ekc-app: {{ .Release.Name }}
+  replicas: {{ .Values.akamai.eaaConnector.replicaCount }}   # Do not change this for now
+  serviceName: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        ekc-app: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: ekc
+          imagePullPolicy: {{ .Values.images.ekc.pullPolicy | default "Always" }}
+          image: {{ .Values.images.ekc.repository }}:{{ .Values.images.ekc.tag | default .Chart.AppVersion }}
+          resources:
+            {{- toYaml .Values.resources.ekc | nindent 12 }}
+          env:
+            - name: DOCKER_HOST
+              value: "tcp://localhost:2376"
+            - name: DOCKER_CERT_PATH
+              value: "/certs/client"
+            - name: DOCKER_TLS_VERIFY
+              value: "True"
+          volumeMounts:
+            - name: akamai-edgerc
+              mountPath: /opt/akamai/.edgerc
+              readOnly: True
+              subPath: data
+            - name: dind-certs
+              mountPath: /certs/
+              readOnly: true
+        - name: dind-daemon
+          image: {{ .Values.images.dind.repository }}:20.10-dind
+          resources:
+            {{- toYaml .Values.resources.dind | nindent 12 }}
+          securityContext:
+              privileged: true
+          env:
+            - name: DOCKER_TLS_CERTDIR
+              value: "/certs"
+          volumeMounts:
+            - name: {{ .Release.Name }}-storage
+              mountPath: /var/lib/docker
+            - name: dind-certs
+              mountPath: /certs
+              readOnly: false
+      volumes:
+        - name: akamai-edgerc
+          secret:
+            secretName: {{ .Values.akamai.eaaConnector.edgerc_secret.name }}
+            items:
+              - key: edgerc
+                path: data
+        - name: dind-certs
+          emptyDir: {}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+  volumeClaimTemplates:
+    - metadata:
+        name: {{ .Release.Name }}-storage
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: {{ .Values.akamai.eaaConnector.pvStorageClass | default ""}}
+        resources:
+          requests:
+            storage: 200Gi
