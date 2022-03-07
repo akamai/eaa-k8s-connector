@@ -13,6 +13,11 @@ Fully automated setup a "long lived" EAA Conenctor (statefulSet) within k8s
 
 
 ## How to
+### helm deployment
+continue reading [here](helm/README.md)
+
+### manual deployment
+
 - Create a namespace for the connector  
   ```text
   kubectl create namespace <your_namespace>
