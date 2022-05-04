@@ -88,8 +88,6 @@ def new_connector():
     # Test the connection to OpenAPI
     akalog.info(f"Testing Connection to AKAMAI {{OPEN}}API")
     check_return(myAkaApi.test_connection())
-    # Mike tmp
-    sys.exit(1)
 
     # Test the connection to Docker
     akalog.info(f"Testing Connection to Docker (DinD)")
