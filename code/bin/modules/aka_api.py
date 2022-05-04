@@ -44,8 +44,10 @@ class AkaApi:
             client_token=edgerc.get(section, 'client_token'),
             client_secret=edgerc.get(section, 'client_secret'),
             access_token=edgerc.get(section, 'access_token'))
-        if extra_qs:
-            scanned_extra_qs = edgerc.get(section, 'extra_qs', fallback=None)
+
+        self.extraqs = None
+        scanned_extra_qs = edgerc.get(section, 'extra_qs', fallback=None)
+        if scanned_extra_qs:
             self.akalog.debug(f"Found Extra QS in the .edgerc file: {scanned_extra_qs}")
             self.extraqs = parse_qs(scanned_extra_qs)
 

@@ -53,7 +53,7 @@ except KeyError:
 
 
 # Instanciate the worker classes
-myAkaApi = aka_api.AkaApi(edgerc_section=edgerc_section)
+myAkaApi = aka_api.AkaApi(edgerc_section=edgerc_section,edgerc="~/akamaidemo_service.edgegrid")
 myDocker = Docker.AkaDocker()
 
 
@@ -88,6 +88,8 @@ def new_connector():
     # Test the connection to OpenAPI
     akalog.info(f"Testing Connection to AKAMAI {{OPEN}}API")
     check_return(myAkaApi.test_connection())
+    # Mike tmp
+    sys.exit(1)
 
     # Test the connection to Docker
     akalog.info(f"Testing Connection to Docker (DinD)")
