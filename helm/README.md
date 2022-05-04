@@ -39,6 +39,6 @@ kubectl create secret generic akamai-edgerc -n <your_namespace> --from-file=edge
 With the following command, helm will install the EAA Kubernetes Connector helm package.  
 It will create 200 GB PVC in the default storage class (multi AZ storageclases recommended).
 ```text
-helm install -n <your_namespace> <your-connector-name> akamai-ekc
+helm upgrade --install --create-namespace --namespace <your_namespace> <your-connector-name> akamai-ekc
 ```
 

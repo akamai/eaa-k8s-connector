@@ -45,9 +45,10 @@ local_tmp_con_file = '/tmp/connector.tar.gz'
 connector_name = os.environ['HOSTNAME']
 connector_desc = "EAA Connector for k8s - automated via eaa-k8s-sidecar script"
 
-if os.environ['EDGERC_SECTION']:
-    edgerc_section = os.environ['EDGERC_SECTION']
-else:
+try:
+    if os.environ['EDGERC_SECTION']:
+        edgerc_section = os.environ['EDGERC_SECTION']
+except KeyError:
     edgerc_section = "default"
 
 
