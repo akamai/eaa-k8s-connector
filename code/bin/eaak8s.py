@@ -53,7 +53,7 @@ except KeyError:
 
 
 # Instanciate the worker classes
-myAkaApi = aka_api.AkaApi(edgerc_section=edgerc_section,edgerc="~/akamaidemo_service.edgegrid")
+myAkaApi = aka_api.AkaApi(edgerc_section=edgerc_section)
 myDocker = Docker.AkaDocker()
 
 
