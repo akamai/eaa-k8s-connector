@@ -11,6 +11,11 @@ Fully automated setup a "long lived" EAA Conenctor (statefulSet) within k8s
 - A working .edgerc file prepared for EAA {OPEN}API
 - Kubernetes API access (+ kubectl) to create secrets and deployments/statefulsets
 
+## ENV VARS
+| Variable       | Default | Description               |
+|----------------|---------|---------------------------|
+| EDGERC_SECTION | default | The EdgeRC Section to use | 
+
 
 ## How to
 ### helm deployment

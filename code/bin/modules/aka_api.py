@@ -29,13 +29,14 @@ class AkaApi:
     """
     AKAMAI API CLASS for EAA k8s handler
     """
-    def __init__(self):
+    def __init__(self, edgerc_section="default",
+                        edgerc="~/.edgerc" ):
         # Instanciate logging
         self.akalog = logging.getLogger("ekc.AkaApi")
         self.akalog.info("loaded")
 
-        edgerc = EdgeRc(os.path.expanduser('~/.edgerc'))
-        section = 'aksell10'
+        edgerc = EdgeRc(os.path.expanduser(edgerc))
+        section = edgerc_section
         self.baseurl = f"https://{edgerc.get(section, 'host')}"
 
         self.session = requests.Session()
@@ -51,7 +52,8 @@ class AkaApi:
     def _api_request(self, method="GET", path=None, params={}, payload=None, headers={}, expected_status_list=[200]):
         try:
             my_url = self.baseurl + path
-            params = params | (self.extraqs)
+            if self.extraqs:
+                params = params | (self.extraqs)
             self.akalog.debug(f"Sending Request - Method: {method}, Path: {path}")
             my_request = self.session.request(method=method.upper(), url=my_url, params=params, headers=headers, json=payload)
             self.akalog.debug(f"Received Status: {my_request.status_code}, Text: {my_request.text}")

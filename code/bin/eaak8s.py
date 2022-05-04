@@ -40,16 +40,20 @@ akalog.debug(f"Logging initialized (Level: {logging.getLevelName(akalog.getEffec
 #myconfig = eaaK8sConfig.eaaK8sConfig()
 #print(myconfig.get())
 
-
-
-# Instanciate the worker classes
-myAkaApi = aka_api.AkaApi()
-myDocker = Docker.AkaDocker()
-
 # Some variables
 local_tmp_con_file = '/tmp/connector.tar.gz'
 connector_name = os.environ['HOSTNAME']
 connector_desc = "EAA Connector for k8s - automated via eaa-k8s-sidecar script"
+
+if os.environ['EDGERC_SECTION']:
+    edgerc_section = os.environ['EDGERC_SECTION']
+else:
+    edgerc_section = "default"
+
+
+# Instanciate the worker classes
+myAkaApi = aka_api.AkaApi(edgerc_section=edgerc_section)
+myDocker = Docker.AkaDocker()
 
 
 
