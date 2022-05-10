@@ -16,6 +16,7 @@ spec:
     metadata:
       labels:
         ekc-app: {{ .Release.Name }}
+        ekc-type: docker-connector
     spec:
       containers:
         - name: ekc
