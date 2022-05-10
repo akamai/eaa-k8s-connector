@@ -36,4 +36,19 @@ nodeSelector: {}
 
 tolerations: []
 
+<<<<<<< HEAD
 affinity: {}
+=======
+affinity:
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+              - key: "ekc-type"
+                operator: In
+                values:
+                - "docker-connector"
+          topologyKey: topology.kubernetes.io/region
+>>>>>>> development

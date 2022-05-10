@@ -16,10 +16,18 @@ spec:
     metadata:
       labels:
         ekc-app: {{ .Release.Name }}
+<<<<<<< HEAD
     spec:
       containers:
         - name: ekc
           imagePullPolicy: {{ .Values.images.ekc.pullPolicy | default "Always" }}
+=======
+        ekc-type: docker-connector
+    spec:
+      containers:
+        - name: ekc
+          imagePullPolicy: {{ .Values.images.ekc.pullPolicy | default "IfNotPresent" }}
+>>>>>>> development
           image: {{ .Values.images.ekc.repository }}:{{ .Values.images.ekc.tag | default .Chart.AppVersion }}
           resources:
             {{- toYaml .Values.resources.ekc | nindent 12 }}
