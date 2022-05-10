@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: ekc
-          imagePullPolicy: {{ .Values.images.ekc.pullPolicy | default "Always" }}
+          imagePullPolicy: {{ .Values.images.ekc.pullPolicy | default "IfNotPresent" }}
           image: {{ .Values.images.ekc.repository }}:{{ .Values.images.ekc.tag | default .Chart.AppVersion }}
           resources:
             {{- toYaml .Values.resources.ekc | nindent 12 }}
