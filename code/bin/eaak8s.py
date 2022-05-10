@@ -45,6 +45,7 @@ local_tmp_con_file = '/tmp/connector.tar.gz'
 connector_name = os.environ['HOSTNAME']
 connector_desc = "EAA Connector for k8s - automated via eaa-k8s-sidecar script"
 
+# Read some ENV Vars
 try:
     if os.environ['EDGERC_SECTION']:
         edgerc_section = os.environ['EDGERC_SECTION']
@@ -76,6 +77,7 @@ def check_return(retvar, connector_id: str=None):
                                 f"Please remove it manual in Enterprise Control Center")
 
         akalog.critical(f"Error Occured in previous step. Received: {retvar} - exiting")
+        time.sleep(600)
         sys.exit(1)
 
 
