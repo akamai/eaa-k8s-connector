@@ -15,7 +15,8 @@ images:
     pullPolicy: IfNotPresent
   dind:
     repository: docker
-    tag: 20.14-dind
+    #tag: 20.14-dind
+    tag: 20.10.22-dind
     pullPolicy: IfNotPresent
 
 

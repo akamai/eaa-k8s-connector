@@ -40,7 +40,7 @@ spec:
               mountPath: /certs/
               readOnly: true
         - name: dind-daemon
-          image: {{ .Values.images.dind.repository }}:20.10-dind
+          image: {{ .Values.images.dind.repository }}:{{ .Values.images.dind.tag }}
           resources:
             {{- toYaml .Values.resources.dind | nindent 12 }}
           securityContext:
@@ -81,7 +81,7 @@ spec:
       spec:
         accessModes:
           - ReadWriteOnce
-        storageClassName: {{ .Values.akamai.eaaConnector.pvStorageClass | default ""}}
+        storageClassName: {{ .Values.akamai.eaaConnector.pvStorageClass | default "" }}
         resources:
           requests:
             storage: 200Gi
