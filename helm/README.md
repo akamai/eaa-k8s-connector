@@ -42,3 +42,15 @@ It will create 200 GB PVC in the default storage class (multi AZ storageclases r
 helm upgrade --install --create-namespace --namespace <your_namespace> <your-connector-name> akamai-ekc
 ```
 
+# Known issues
+## pod errors
+The pod will not come up immediately, as there are some cross - requirements.
+you might see a couple of 
+```bash
+connector     1/2     Error     1 (17s ago)   63s
+```
+or even
+```bash
+connector     1/2     CrashLoopBackOff   1 (12s ago)    68s
+```
+but in the end it should come up perfectly fine 
