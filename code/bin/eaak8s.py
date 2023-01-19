@@ -136,7 +136,7 @@ def new_connector():
 
     # Check if connector is ready for approval
     akalog.info(f"Checking if the connector is ready for approval on AKAMAI {{OPEN}}API")
-    retries = 5
+    retries = 10
     time_wait = 60
     counter = 1
 
