@@ -1,4 +1,13 @@
 # Version History
+## 0.0.3
+|||
+|---|---|
+|Date|2023-01-244
+|Kind| Bugfix release
+|Author| mschiess@akamai.com
+- **Bugfixes**
+  - Changed the connection checking "HEAD" request to a "GET" request as HEAD returned a 400
+
 ## 0.0.2
 |||
 |---|---|

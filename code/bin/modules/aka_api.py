@@ -78,7 +78,7 @@ class AkaApi:
         :return: True on success
         """
         self.akalog.debug(f"Starting Connection Test")
-        return self._api_request(method="HEAD", path="/crux/v1/mgmt-pop/agents")
+        return self._api_request(method="GET", path="/crux/v1/mgmt-pop/agents")
 
     def list_connectors(self):
         """
