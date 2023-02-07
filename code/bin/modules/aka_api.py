@@ -30,7 +30,7 @@ class AkaApi:
     AKAMAI API CLASS for EAA k8s handler
     """
     def __init__(self, edgerc_section="default",
-                        edgerc="~/.edgerc" ):
+                        edgerc="/opt/akamai/.edgerc" ):
         # Instanciate logging
         self.akalog = logging.getLogger("ekc.AkaApi")
         self.akalog.info("loaded")

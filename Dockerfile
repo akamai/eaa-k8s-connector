@@ -22,12 +22,12 @@ RUN	            apt-get update && \
 # USER & GROUP
 RUN 	        groupadd akamai && \
                 useradd -g akamai -s /bin/bash -m -d ${HOMEDIR} akamai
-USER            akamai
+#USER            akamai
 WORKDIR         ${HOMEDIR}
 RUN             mkdir -p ${EKC_DIR}
 
 
-# Install ULS
+# Install EKC
 COPY            code/ ${EKC_DIR}/
 WORKDIR         ${EKC_DIR}
 RUN             pip3 install -r ${EKC_DIR}/requirements.txt
