@@ -56,6 +56,11 @@ class AkaDocker:
         self.akalog.debug(f"Start the new connector (Name: {container_name}) from image (Image: {image_name})")
         return self.client.containers.run(image=image_name, name=container_name, detach=True, restart_policy={"Name": "always"})
 
+    # Obsolete --> better container_running_by_name
     def container_running(self):
         self.akalog.debug(f"Check if a container is already running")
         return self.client.containers.list(all=True)
+
+    def container_running_by_name(self, containername):
+        self.akalog.debug(f"Check a container with my name is already running")
+        return self.client.containers.list(filters={"name": containername})

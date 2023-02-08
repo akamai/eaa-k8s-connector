@@ -1,8 +1,20 @@
 # Version History
+## 0.0.4
+|||
+|---|---|
+|Date|2023-02-07
+|Kind| Bugfix release
+|Author| mschiess@akamai.com
+- **Bugfixes**
+  - Removed user privilege drop "security-feature" in Dockerfile to allow "socket access"  
+    Also pinned the edgerc path to: `/opt/akamai/.edgerc`, allowing to be overwritten by the EDGERC ENV var
+  - using name based checking of a connector-container already exists (vs. is there a container at all before) 
+  - added docker documentation (works stand-alone on a docker host)
+
 ## 0.0.3
 |||
 |---|---|
-|Date|2023-01-244
+|Date|2023-01-24
 |Kind| Bugfix release
 |Author| mschiess@akamai.com
 - **Bugfixes**

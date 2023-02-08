@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright 2022 Akamai Technologies, Inc. All Rights Reserved
+# Copyright 2023 Akamai Technologies, Inc. All Rights Reserved
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -42,19 +42,30 @@ akalog.debug(f"Logging initialized (Level: {logging.getLevelName(akalog.getEffec
 
 # Some variables
 local_tmp_con_file = '/tmp/connector.tar.gz'
-connector_name = os.environ['HOSTNAME']
+
+# Connector name
+try:
+    connector_name=os.environ['CONNECTOR_NAME']
+except KeyError:
+    connector_name = os.environ['HOSTNAME']
+
+
 connector_desc = "EAA Connector for k8s - automated via eaa-k8s-sidecar script"
 
-# Read some ENV Vars
+# EDFGERC Section
 try:
-    if os.environ['EDGERC_SECTION']:
         edgerc_section = os.environ['EDGERC_SECTION']
 except KeyError:
     edgerc_section = "default"
 
+# EDGERC FILE
+try:
+    edgerc = os.environ['EDGERC']
+except KeyError:
+    edgerc = "/opt/akamai/.edgerc"
 
 # Instanciate the worker classes
-myAkaApi = aka_api.AkaApi(edgerc_section=edgerc_section)
+myAkaApi = aka_api.AkaApi(edgerc_section=edgerc_section, edgerc=edgerc)
 myDocker = Docker.AkaDocker()
 
 
@@ -99,7 +110,8 @@ def new_connector():
 
     # check if a container (checking for every container) is/was already running
     akalog.info(f"Checking if a container / connector is already running")
-    running = myDocker.container_running()
+    #running = myDocker.container_running()
+    running = myDocker.container_running_by_name(containername=connector_name)
     if running:
         akalog.critical(f"A container is already running: {running} - exiting")
         return False
