@@ -73,6 +73,7 @@ docker run --rm --privileged \
   --volume /var/run/docker.sock:/var/run/docker.sock \
   --volume /root/.edgerc:/opt/akamai/.edgerc \
   --name akamai-ekc \
+  --restart unless-stopped \
   akamai/eaa-k8s-connector:latest
 ```
 
