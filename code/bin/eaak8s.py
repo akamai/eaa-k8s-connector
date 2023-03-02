@@ -111,7 +111,7 @@ def new_connector():
     # check if a container (checking for every container) is/was already running
     akalog.info(f"Checking if a container / connector is already running")
     #running = myDocker.container_running()
-    running = myDocker.container_running_by_name(containername=connector_name)
+    running = myDocker.container_running_by_name(containername=f"{connector_name}-con")
     if running:
         akalog.critical(f"A container is already running: {running} - exiting")
         return False
@@ -147,7 +147,7 @@ def new_connector():
 
     # Start the connector (mounting the above volume)
     akalog.info(f"Starting the new connector within docker")
-    container = myDocker.run_container(image_name=connector_image_name, container_name=connector_name, volume_name=f"{connector_name}-vol")
+    container = myDocker.run_container(image_name=connector_image_name, container_name=f"{connector_name}-con", volume_name=f"{connector_name}-vol")
     check_return(retvar=container, connector_id=connector_id)
 
     # Check if connector is ready for approval

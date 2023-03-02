@@ -4,7 +4,7 @@
 |Kind| Feature release
 |Author| mschiess@akamai.com
 - **Features**
-  - Contract ID now being added to the requests
+  - Contract ID  (contract_id) now being treated within the .edgerc
   - Connector Data will be stored in a volume now
 - **Bugfixes**
   - Fixed some bogus data in the README (docker)

@@ -69,15 +69,15 @@ This repo also allows you "auto deploy" an EAA connector on a single docker host
 
 ### docker deployment
 ```bash
+# Put the hostname into an ENV variable 
 export AKA_CON_NAME=<YOUR CONNECTOR NAME>
 
-sudo docker run --privileged \
+sudo docker run --rm --privileged \
   --volume /var/run/docker.sock:/var/run/docker.sock \
   --volume /root/.edgerc:/opt/akamai/.edgerc \
   --name akamai-ekc \
   --env CONNECTOR_NAME=${AKA_CON_NAME} \
-  --restart unless-stopped \
-  --name ${AKA_CON_NAME} \
+  --name ${AKA_CON_NAME}-ekc \
   akamai/eaa-k8s-connector:latest
 ```
 
