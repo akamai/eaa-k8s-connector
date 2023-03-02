@@ -50,12 +50,19 @@ class AkaApi:
         if scanned_extra_qs:
             self.akalog.debug(f"Found Extra QS in the .edgerc file: {scanned_extra_qs}")
             self.extraqs = parse_qs(scanned_extra_qs)
+        self.contract = None
+        scanned_contract = edgerc.get(section, 'contract_id', fallback=None)
+        if scanned_contract:
+            self.akalog.debug(f"Found a contract ID in the .edgerc file: {scanned_contract}")
+            self.contract = {'contractId': scanned_contract}
 
     def _api_request(self, method="GET", path=None, params={}, payload=None, headers={}, expected_status_list=[200]):
         try:
             my_url = self.baseurl + path
             if self.extraqs:
                 params = params | (self.extraqs)
+            if self.contract:
+                params.update(self.contract)
             self.akalog.debug(f"Sending Request - Method: {method}, Path: {path}")
             my_request = self.session.request(method=method.upper(), url=my_url, params=params, headers=headers, json=payload)
             self.akalog.debug(f"Received Status: {my_request.status_code}, Text: {my_request.text}")

@@ -1,4 +1,14 @@
 # Version History
+## 0.0.5
+|Date|2023-03-02
+|Kind| Feature release
+|Author| mschiess@akamai.com
+- **Features**
+  - Contract ID now being added to the requests
+  - Connector Data will be stored in a volume now
+- **Bugfixes**
+  - Fixed some bogus data in the README (docker)
+
 ## 0.0.4
 |||
 |---|---|

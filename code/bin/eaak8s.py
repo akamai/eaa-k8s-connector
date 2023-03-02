@@ -140,10 +140,14 @@ def new_connector():
     image = myDocker.search_image(connector_image_name)
     check_return(retvar=image, connector_id=connector_id)
 
+    # CREATE A VOLUME
+    akalog.info(f"Creating a docker volume")
+    my_volume = myDocker.volume_create(volumename=f"{connector_name}-vol")
+    check_return(my_volume)
 
-    # Start the connector
+    # Start the connector (mounting the above volume)
     akalog.info(f"Starting the new connector within docker")
-    container = myDocker.run_container(image_name=connector_image_name, container_name="eaa-k8s-con")
+    container = myDocker.run_container(image_name=connector_image_name, container_name=connector_name, volume_name=f"{connector_name}-vol")
     check_return(retvar=container, connector_id=connector_id)
 
     # Check if connector is ready for approval
