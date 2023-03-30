@@ -1,15 +1,15 @@
 # EAA Kubernetes Connector
-This repository holds the code for a sidecar container to which installs all required components to run an [Enterprise Application Access](https://www.akamai.com/products/enterprise-application-access) Connector.  
-This solution leverages EAA Connector in their Docker flavor, ~~so only web application (client-less) are supported.~~(EAA 2022.3 will support client traffic as well)
+This repository contains the code for a sidecar container which installs all the required components to run an [Enterprise Application Access](https://www.akamai.com/products/enterprise-application-access) Connector.  
+This solution leverages EAA Connector in Docker flavor, ~~Currently, only Web, RDP, and SSH application (client-less) is supported.~~(EAA 2022.03.02 will also support TCP-type and Tunnel-type client-access application traffic.)
 
 
-## TL;DR
-Fully automated setup a "long lived" EAA Connector (statefulSet) within:
+## TL;DR (Too Long; Didn't Read) a.k.a Summary
+Fully automated setup for a "long lived" EAA Connector (statefulSet) in:
 - kubernetes (k8s)
 - on a docker host
 
 
-## Supporterd ENV VARS
+## Supported Environment Variables 
 
 | Variable       | Default | Description               |
 |----------------|---------|---------------------------|
