@@ -53,7 +53,7 @@ class AkaApi:
             self.extraqs = parse_qs(scanned_extra_qs)
 
         # The NEW account_key way of doing account switching
-        account_key = none
+        account_key = None
         self.account_key = None
         account_key = edgerc.get(section, 'account_key', fallback=None)
         if account_key:
