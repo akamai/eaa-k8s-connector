@@ -4,18 +4,19 @@ This solution leverages EAA Connector in their Docker flavor, ~~so only web appl
 
 
 ## TL;DR
-Fully automated setup a "long lived" EAA Connector (statefulSet) within:
+Fully automated setup of a "long lived" EAA Connector within:
 - kubernetes (k8s)
 - on a docker host
 
 
 ## Supporterd ENV VARS
 
-| Variable       | Default | Description               |
-|----------------|---------|---------------------------|
-|EDGERC | "/opt/akamai/.edgerc" | The EdgeRC File to use|
-| EDGERC_SECTION | default | The EdgeRC Section to use | 
-| CONNECTOR_NAME | $HOSTNAME | The Connector name      |
+| Variable       | Default | Description                                                                                    |
+|----------------|---------|------------------------------------------------------------------------------------------------|
+|EDGERC | "/opt/akamai/.edgerc" | The EdgeRC File to use                                                                         |
+| EDGERC_SECTION | default | The EdgeRC Section to use                                                                      | 
+| CONNECTOR_NAME | $HOSTNAME | The Connector name                                                                             |
+| DISABLE_EAA_CLIENT_SUPPORT | False | Disabling EAA Client support by removing additional capabilities <br>Set to "True" to disable. | 
 
 
 

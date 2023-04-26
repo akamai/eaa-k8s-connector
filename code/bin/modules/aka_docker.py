@@ -52,9 +52,9 @@ class AkaDocker:
             self.akalog.warning(f"Exception occurred during import of docker image from file. Exception: {err}")
             return False
 
-    def run_container(self, image_name: str=None, container_name: str=None, volume_name: str=None):
+    def run_container(self, image_name: str = None, container_name: str = None, volume_name: str = None, cap_add: list = ["NET_ADMIN", "NET_RAW"]):
         self.akalog.debug(f"Start the new connector (Name: {container_name}) from image (Image: {image_name})")
-        return self.client.containers.run(image=image_name, name=container_name, volumes=[f"{volume_name}:/opt/wapp"], detach=True, restart_policy={"Name": "always"})
+        return self.client.containers.run(image=image_name, name=container_name, volumes=[f"{volume_name}:/opt/wapp"], detach=True, restart_policy={"Name": "always"}, cap_add=cap_add)
 
     # Obsolete --> better container_running_by_name
     def container_running(self):

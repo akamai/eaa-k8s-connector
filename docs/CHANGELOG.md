@@ -1,4 +1,12 @@
 # Version History
+## 0.0.6
+|Date|2023-04-26
+|Kind| Feature release
+|Author| mschiess@akamai.com
+- **Features**
+  - Amending the required CAP'S (net_raw & net_admin) by default (disable via "DISABLE_EAA_CLIENT_SUPPORT" ENV var)
+  - Added the new account_key - edgerc enhancement to trigger "accountSwitchKey" (still maintaining the old construct)
+
 ## 0.0.5
 |Date|2023-03-02
 |Kind| Feature release

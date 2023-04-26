@@ -45,10 +45,16 @@ local_tmp_con_file = '/tmp/connector.tar.gz'
 
 # Connector name
 try:
-    connector_name=os.environ['CONNECTOR_NAME']
+    connector_name = os.environ['CONNECTOR_NAME']
 except KeyError:
     connector_name = os.environ['HOSTNAME']
 
+
+# EAA_CLIENT_SUPPORT
+try:
+    disable_eaa_client_support = os.environ['DISABLE_EAA_CLIENT_SUPPORT']
+except KeyError:
+    disable_eaa_client_support = False
 
 connector_desc = "EAA Connector for k8s - automated via eaa-k8s-sidecar script"
 
@@ -147,7 +153,15 @@ def new_connector():
 
     # Start the connector (mounting the above volume)
     akalog.info(f"Starting the new connector within docker")
-    container = myDocker.run_container(image_name=connector_image_name, container_name=f"{connector_name}-con", volume_name=f"{connector_name}-vol")
+    if not disable_eaa_client_support:
+        connector_caps = ["NET_ADMIN", "NET_RAW"]
+    else:
+        connector_caps = []
+
+    container = myDocker.run_container(image_name=connector_image_name,
+                                       container_name=f"{connector_name}-con",
+                                       volume_name=f"{connector_name}-vol",
+                                       cap_add=connector_caps)
     check_return(retvar=container, connector_id=connector_id)
 
     # Check if connector is ready for approval

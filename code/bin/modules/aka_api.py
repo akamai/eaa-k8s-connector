@@ -44,23 +44,39 @@ class AkaApi:
             client_token=edgerc.get(section, 'client_token'),
             client_secret=edgerc.get(section, 'client_secret'),
             access_token=edgerc.get(section, 'access_token'))
-
+        # The OLD extraQS way of doing account switching (will be disregarded some day !!)
         self.extraqs = None
+        scanned_extra_qs = None
         scanned_extra_qs = edgerc.get(section, 'extra_qs', fallback=None)
         if scanned_extra_qs:
             self.akalog.debug(f"Found Extra QS in the .edgerc file: {scanned_extra_qs}")
             self.extraqs = parse_qs(scanned_extra_qs)
+
+        # The NEW account_key way of doing account switching
+        account_key = none
+        self.account_key = None
+        account_key = edgerc.get(section, 'account_key', fallback=None)
+        if account_key:
+            self.akalog.debug(f"Found an accountSwitchKey (account_key) in the .edgerc file: {account_key}")
+            self.account_key = {'accountSwitchKey': account_key}
+
+        # Checking for a contract configuration
         self.contract = None
         scanned_contract = edgerc.get(section, 'contract_id', fallback=None)
         if scanned_contract:
             self.akalog.debug(f"Found a contract ID in the .edgerc file: {scanned_contract}")
             self.contract = {'contractId': scanned_contract}
 
+
     def _api_request(self, method="GET", path=None, params={}, payload=None, headers={}, expected_status_list=[200]):
         try:
             my_url = self.baseurl + path
-            if self.extraqs:
+            # Put either the account_key (preferred) or the old extra_qa stuff
+            if self.account_key:
+                params.update(self.account_key)
+            elif self.extraqs:
                 params = params | (self.extraqs)
+
             if self.contract:
                 params.update(self.contract)
             self.akalog.debug(f"Sending Request - Method: {method}, Path: {path}")
