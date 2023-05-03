@@ -1,4 +1,11 @@
 # Version History
+## 0.0.7
+|Date|2023-05-03
+|Kind| Feature release
+|Author| mschiess@akamai.com
+- **bugfix**
+  - fixed a bug that prevented cliented traffic to be onboarded
+
 ## 0.0.6
 |Date|2023-04-26
 |Kind| Feature release

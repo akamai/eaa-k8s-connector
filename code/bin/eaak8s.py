@@ -155,12 +155,14 @@ def new_connector():
     akalog.info(f"Starting the new connector within docker")
     if not disable_eaa_client_support:
         connector_caps = ["NET_ADMIN", "NET_RAW"]
+        volumes = [f"{connector_name}-vol:/opt/wapp", "/lib/modules:/lib/modules"]
     else:
         connector_caps = []
+        volumes = [f"{connector_name}-vol:/opt/wapp"]
 
     container = myDocker.run_container(image_name=connector_image_name,
                                        container_name=f"{connector_name}-con",
-                                       volume_name=f"{connector_name}-vol",
+                                       volumes=volumes,
                                        cap_add=connector_caps)
     check_return(retvar=container, connector_id=connector_id)
 
