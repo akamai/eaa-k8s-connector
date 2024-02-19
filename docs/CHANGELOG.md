@@ -1,4 +1,11 @@
 # Version History
+### 0.0.8
+|Date|2023-05-03
+|Kind| Feature release
+|Author| mschiess@akamai.com  
+**Housekeeping**
+- upgraded python version from 3.11 to 3.12 (docker)
+
 ## 0.0.7
 |Date|2023-05-03
 |Kind| Feature release
