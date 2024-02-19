@@ -12,11 +12,11 @@ images:
   ekc:
     repository: akamai/eaa-k8s-connector
     tag: latest
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
   dind:
     repository: docker
     #tag: 20.14-dind
-    tag: 20.10.22-dind
+    tag: 25.0.3-dind
     pullPolicy: IfNotPresent
 
 

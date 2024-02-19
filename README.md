@@ -12,14 +12,12 @@ Fully automated setup of a "long lived" EAA Connector within:
 
 ## Supported Environment Variables 
 
-| Variable       | Default | Description                                                                                    |
-|----------------|---------|------------------------------------------------------------------------------------------------|
-|EDGERC | "/opt/akamai/.edgerc" | The EdgeRC File to use                                                                         |
-| EDGERC_SECTION | default | The EdgeRC Section to use                                                                      | 
-| CONNECTOR_NAME | $HOSTNAME | The Connector name                                                                             |
+| Variable                   | Default | Description                                                                                    |
+|----------------------------|---------|------------------------------------------------------------------------------------------------|
+| EDGERC                     | "/opt/akamai/.edgerc" | The EdgeRC File to use                                                                         |
+| EDGERC_SECTION             | default | The EdgeRC Section to use                                                                      | 
+| CONNECTOR_NAME             | $HOSTNAME | The Connector name                                                                             |
 | DISABLE_EAA_CLIENT_SUPPORT | False | Disabling EAA Client support by removing additional capabilities <br>Set to "True" to disable. | 
-
-
 
 # How to
 ## Kubernetes
