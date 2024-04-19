@@ -143,8 +143,8 @@ def new_connector():
     while url_retry_delay > 0 and not my_connector['download_url']:
         akalog.warning(f"It seems like the download URL isn't available, yet - we're retrying in  {url_retry_delay} seconds (Attempts left: {url_retries})")
         time.sleep(url_retry_delay)
-        my_connector = list_connector(connector_id=connector_id)
-        url_retry_delay = url_retry_delay * 2
+        my_connector = myAkaApi.list_connector(connector_id=connector_id)
+        url_retry_delay = url_retry_delay + 60
         url_retries = url_retries - 1
 
     if not my_connector['download_url']:
