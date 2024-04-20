@@ -153,8 +153,6 @@ def new_connector():
     # /EME-835
 
 
-    connector_filename = my_connector['download_url'].split('?')[0].split('/')[-1]
-    connector_image_name = "akamai_docker_connector_" + connector_filename.split('.')[0]
 
 
     # Download connector image
@@ -166,6 +164,8 @@ def new_connector():
 
     # Load the eaa connector image into docker
     akalog.info(f"Importing connector image into docker (this can take a while)")
+    connector_filename = my_connector['download_url'].split('?')[0].split('/')[-1]
+    connector_image_name = "akamai_docker_connector_" + connector_filename.split('.')[0]
     docker_load = myDocker.load_image(container_file=local_tmp_con_file)
     check_return(docker_load)
     image = myDocker.search_image(connector_image_name)
