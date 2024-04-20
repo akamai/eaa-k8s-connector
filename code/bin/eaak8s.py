@@ -161,7 +161,7 @@ def new_connector():
     akalog.info(f"Downloading connector image for the new connector to disk (this can take a while)")
     if os.path.exists(local_tmp_con_file):
         os.remove(local_tmp_con_file)
-    download = myAkaApi.download_connector(download_url=newConnector['download_url'], download_file=local_tmp_con_file)
+    download = myAkaApi.download_connector(download_url=my_connector['download_url'], download_file=local_tmp_con_file)
     check_return(retvar=download, connector_id=connector_id)
 
     # Load the eaa connector image into docker
