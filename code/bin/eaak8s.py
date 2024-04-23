@@ -70,6 +70,14 @@ try:
 except KeyError:
     edgerc = "/opt/akamai/.edgerc"
 
+# NETWORK MODE
+try:
+    network_mode = os.environ.get('NETWORK_MODE')
+except KeyError:
+    network_mode = "bridge"
+
+
+
 # Instanciate the worker classes
 myAkaApi = aka_api.AkaApi(edgerc_section=edgerc_section, edgerc=edgerc)
 myDocker = Docker.AkaDocker()
@@ -188,7 +196,8 @@ def new_connector():
     container = myDocker.run_container(image_name=connector_image_name,
                                        container_name=f"{connector_name}-con",
                                        volumes=volumes,
-                                       cap_add=connector_caps)
+                                       cap_add=connector_caps,
+                                       network_mode=network_mode)
     check_return(retvar=container, connector_id=connector_id)
 
     # Check if connector is ready for approval
