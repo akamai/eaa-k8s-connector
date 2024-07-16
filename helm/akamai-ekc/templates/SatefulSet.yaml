@@ -32,7 +32,7 @@ spec:
             - name: DOCKER_TLS_VERIFY
               value: "True"
             - name: DISABLE_EAA_CLIENT_SUPPORT
-              valie: "True"
+              value: "True"
           volumeMounts:
             - name: akamai-edgerc
               mountPath: /opt/akamai/.edgerc
@@ -56,7 +56,6 @@ spec:
               mountPath: /var/lib/docker
             - name: dind-certs
               mountPath: /certs
-              readOnly: false
             - name: modules
               mountPath: /lib/modules
       volumes:
@@ -85,7 +84,9 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
   volumeClaimTemplates:
-    - metadata:
+    - kind: PersistentVolumeClaim
+      apiVersion: v1
+      metadata:
         name: {{ .Release.Name }}-storage
       spec:
         accessModes:
