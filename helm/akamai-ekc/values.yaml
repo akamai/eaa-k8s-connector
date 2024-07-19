@@ -8,6 +8,9 @@ akamai:
     pvStorageClass: ""
     edgerc_secret:
       name: "akamai-edgerc"
+    config:
+      disable_tcp_client_support: "True"
+
 images:
   ekc:
     repository: akamai/eaa-k8s-connector
@@ -16,7 +19,7 @@ images:
   dind:
     repository: docker
     #tag: 20.14-dind
-    tag: 25.0.3-dind
+    tag: dind
     pullPolicy: IfNotPresent
 
 

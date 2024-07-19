@@ -32,7 +32,7 @@ spec:
             - name: DOCKER_TLS_VERIFY
               value: "True"
             - name: DISABLE_EAA_CLIENT_SUPPORT
-              value: "True"
+              value: "{{ .Values.akamai.eaaConnector.config.disable_tcp_client_support }}"
           volumeMounts:
             - name: akamai-edgerc
               mountPath: /opt/akamai/.edgerc
@@ -41,7 +41,7 @@ spec:
             - name: dind-certs
               mountPath: /certs/
               readOnly: true
-        - name: dind-daemon
+        - name: dind
           imagePullPolicy: {{ .Values.images.dind.pullPolicy | default "always" }}
           image: {{ .Values.images.dind.repository }}:{{ .Values.images.dind.tag }}
           resources:

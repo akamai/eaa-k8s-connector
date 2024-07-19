@@ -15,12 +15,18 @@ helm plugin list
 ### Add the Helm Repo (mocked with helm-git)
 This steps (together with the one before) adds the helm "mocked" repo to helm repo 
 ```text
-helm repo add akamai-ekc "git+https://github.com/akamai/eaa-k8s-connector@helm?ref=development"
+helm repo add akamai-ekc "git+https://github.com/akamai/eaa-k8s-connector@helm?ref=main"
 
 # Verify Repo installation
 helm repo list
 helm search repo akamai-ekc
 ```
+Alternative to work with the local repo
+(assuming you are in the root directory of the repo)
+```bash
+helm install ... releasename helm/akamai-ekc/
+```
+
 
 ### Create a namespace for your connectors
 ```text

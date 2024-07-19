@@ -32,6 +32,8 @@ spec:
               value: "/certs/client"
             - name: DOCKER_TLS_VERIFY
               value: "True"
+            - name: DISABLE_EAA_CLIENT_SUPPORT
+              value: "True"
           volumeMounts:
             - name: akamai-edgerc
               mountPath: /opt/akamai/.edgerc
@@ -40,7 +42,7 @@ spec:
             - name: dind-certs
               mountPath: /certs/
               readOnly: true
-        - name: dind-daemon
+        - name: dind
           image: docker:20.10-dind
           resources:
               requests:
