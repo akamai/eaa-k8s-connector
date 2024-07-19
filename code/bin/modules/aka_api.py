@@ -120,6 +120,33 @@ class AkaApi:
         self.akalog.debug(f"Listing single connector: {connector_id}")
         return self._api_request(path=f"/crux/v1/mgmt-pop/agents/" + connector_id)
 
+    def search_connector_by_name(self, connector_name: str):
+        """
+        Search for a connector in the list of all connectors
+        :param connector_name: The name of the connector to search for
+        :return: Connector details or False if not found
+        """
+        self.akalog.debug(f"Searching for connector: {connector_name}")
+        page_limit = 100
+        max_cycles = 20
+        my_params = {"limit": page_limit, "offset": 0}
+
+        while max_cycles > 0:
+            result = self._api_request(path="/crux/v1/mgmt-pop/agents", params=my_params)
+
+            for item in result['objects']:
+                # print(item['name'])
+                if connector_name in item['name']:
+                    self.akalog.debug(f"Found connector: {connector_name} with UUID {item['uuid']}")
+                    return item['uuid_url']
+
+            if result['meta']['next']:
+                my_params["offset"] += page_limit
+            else:
+                self.akalog.warning(f"No connectors found with name {connector_name}")
+                return False
+
+
     def create_connector(self, connector_name: str, connector_desc: str, ):
         """
         Create a new connector

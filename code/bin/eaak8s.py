@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright 2023 Akamai Technologies, Inc. All Rights Reserved
+# Copyright 2024 Akamai Technologies, Inc. All Rights Reserved
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -70,6 +70,14 @@ try:
 except KeyError:
     edgerc = "/opt/akamai/.edgerc"
 
+# NETWORK MODE
+try:
+    network_mode = os.environ.get('NETWORK_MODE')
+except KeyError:
+    network_mode = "bridge"
+
+
+
 # Instanciate the worker classes
 myAkaApi = aka_api.AkaApi(edgerc_section=edgerc_section, edgerc=edgerc)
 myDocker = Docker.AkaDocker()
@@ -115,32 +123,57 @@ def new_connector():
     akalog.debug(f"Docker Server reachable: {docker_version}")
 
     # check if a container (checking for every container) is/was already running
-    akalog.info(f"Checking if a container / connector is already running")
+    akalog.info(f"Checking if a container with a connector is already running")
     #running = myDocker.container_running()
     running = myDocker.container_running_by_name(containername=f"{connector_name}-con")
     if running:
-        akalog.critical(f"A container is already running: {running} - exiting")
+        akalog.critical(f"A container hosting the desried connnector is already running: {running} - exiting")
         return False
 
+
+    # EME-835 - We should check online, if there is already a connector online with the same name
+    # And also check the state of the connector
+    # tbd
 
     # Create a new connector (retries=0)
     akalog.info(f"Creating a new connector on AKAMAI {{OPEN}}API")
     newConnector = myAkaApi.create_connector(connector_name=connector_name, connector_desc=connector_desc)
     check_return(newConnector)
     connector_id = newConnector['uuid_url']
-    connector_filename = newConnector['download_url'].split('?')[0].split('/')[-1]
-    connector_image_name = "akamai_docker_connector_" + connector_filename.split('.')[0]
+
+
+    # EME-835 sometimes the image URL is not instantly available - this led to a RACE CONDITION
+    # Rather check  a couple of times if we do have a download URL
+    url_retries = 100
+    url_retry_delay = 30
+    my_connector = newConnector
+
+    while url_retry_delay > 0 and not my_connector['download_url']:
+        akalog.warning(f"It seems like the download URL isn't available, yet - we're retrying in  {url_retry_delay} seconds (Attempts left: {url_retries})")
+        time.sleep(url_retry_delay)
+        my_connector = myAkaApi.list_connector(connector_id=connector_id)
+        url_retry_delay = url_retry_delay + 60
+        url_retries = url_retries - 1
+
+    if not my_connector['download_url']:
+        akalog.critical("No Download URL received, i am giving up now ... - exiting !")
+        sys.exit(1)
+    # /EME-835
+
+
 
 
     # Download connector image
     akalog.info(f"Downloading connector image for the new connector to disk (this can take a while)")
     if os.path.exists(local_tmp_con_file):
         os.remove(local_tmp_con_file)
-    download = myAkaApi.download_connector(download_url=newConnector['download_url'], download_file=local_tmp_con_file)
+    download = myAkaApi.download_connector(download_url=my_connector['download_url'], download_file=local_tmp_con_file)
     check_return(retvar=download, connector_id=connector_id)
 
     # Load the eaa connector image into docker
     akalog.info(f"Importing connector image into docker (this can take a while)")
+    connector_filename = my_connector['download_url'].split('?')[0].split('/')[-1]
+    connector_image_name = "akamai_docker_connector_" + connector_filename.split('.')[0]
     docker_load = myDocker.load_image(container_file=local_tmp_con_file)
     check_return(docker_load)
     image = myDocker.search_image(connector_image_name)
@@ -163,7 +196,8 @@ def new_connector():
     container = myDocker.run_container(image_name=connector_image_name,
                                        container_name=f"{connector_name}-con",
                                        volumes=volumes,
-                                       cap_add=connector_caps)
+                                       cap_add=connector_caps,
+                                       network_mode=network_mode)
     check_return(retvar=container, connector_id=connector_id)
 
     # Check if connector is ready for approval
