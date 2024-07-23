@@ -53,8 +53,10 @@ except KeyError:
 # EAA_CLIENT_SUPPORT
 try:
     disable_eaa_client_support = os.environ['DISABLE_EAA_CLIENT_SUPPORT']
+    akalog.debug(f"DISABLE_EAA_CLIENT_SUPPORT has been set to '{disable_eaa_client_support}'")
 except KeyError:
-    disable_eaa_client_support = False
+    disable_eaa_client_support = True
+    akalog.debug(f"DISABLE_EAA_CLIENT_SUPPORT has been set to '{disable_eaa_client_support}'")
 
 connector_desc = "EAA Connector for k8s - automated via eaa-k8s-sidecar script"
 
@@ -186,7 +188,8 @@ def new_connector():
 
     # Start the connector (mounting the above volume)
     akalog.info(f"Starting the new connector within docker")
-    if not disable_eaa_client_support:
+    if not disable_eaa_client_support or disable_eaa_client_support.lower() == 'false':
+        akalog.info(f"Client Support has been enabled for this connector - applying corresponding settings")
         connector_caps = ["NET_ADMIN", "NET_RAW"]
         volumes = [f"{connector_name}-vol:/opt/wapp", "/lib/modules:/lib/modules"]
     else:

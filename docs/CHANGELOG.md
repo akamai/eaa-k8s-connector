@@ -1,4 +1,13 @@
 # Version History
+## 0.0.10
+|||
+|---|---|
+|Date|2024-07-23
+|Kind| Feature release
+|Author| mschiess@akamai.com  
+**BugFixes**
+- fixed a bug that prevented enabling "client support" 
+
 ## 0.0.9
 |||
 |---|---|
