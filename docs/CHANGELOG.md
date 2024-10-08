@@ -1,4 +1,14 @@
 # Version History
+
+## 0.0.11
+|||
+|---|---|
+|Date|2024-10-xx
+|Kind| Feature release
+|Author| mschiess@akamai.com  
+**BugFixes**
+- dropped old way of reading ENV vars in favor of ARGSPARSER - VAR NAMES stayes the same
+
 ## 0.0.10
 |||
 |---|---|

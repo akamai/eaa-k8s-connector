@@ -23,9 +23,13 @@ import logging
 #import modules.eaaK8sConfig as eaaK8sConfig
 import modules.aka_api as aka_api
 import modules.aka_docker as Docker
-
+import modules.ekc_args as args
+import ekc_config.version as version
 
 # Setup logging
+# Initialize the configuration
+my_args = args.init()
+
 akalog = logging.getLogger("ekc")
 console_handler = logging.StreamHandler()
 #formatter = logging.Formatter('%(asctime)s %(name)s %(levelname).1s %(message)s')
@@ -33,50 +37,44 @@ console_formatter = logging.Formatter('%(asctime)s %(name)s %(message)s', datefm
 
 console_handler.setFormatter(console_formatter)
 akalog.addHandler(console_handler)
-akalog.setLevel("DEBUG")
+akalog.setLevel(my_args.loglevel)
 akalog.debug(f"Logging initialized (Level: {logging.getLevelName(akalog.getEffectiveLevel())})")
 
 
-#myconfig = eaaK8sConfig.eaaK8sConfig()
-#print(myconfig.get())
+if my_args.version:
+    print(f"{version.__tool_name_long__} - v{version.__version__}")
+    sys.exit(0)
 
-# Some variables
+# Loading the Variables
 local_tmp_con_file = '/tmp/connector.tar.gz'
 
-# Connector name
-try:
-    connector_name = os.environ['CONNECTOR_NAME']
-except KeyError:
-    connector_name = os.environ['HOSTNAME']
+## Connector name
+connector_name = my_args.connector_name
+akalog.debug(f"CONNECTOR_NAME has been set to '{connector_name}'")
 
-
-# EAA_CLIENT_SUPPORT
-try:
-    disable_eaa_client_support = os.environ['DISABLE_EAA_CLIENT_SUPPORT']
-    akalog.debug(f"DISABLE_EAA_CLIENT_SUPPORT has been set to '{disable_eaa_client_support}'")
-except KeyError:
-    disable_eaa_client_support = True
-    akalog.debug(f"DISABLE_EAA_CLIENT_SUPPORT has been set to '{disable_eaa_client_support}'")
-
+## Connector Description
 connector_desc = "EAA Connector for k8s - automated via eaa-k8s-sidecar script"
 
-# EDFGERC Section
-try:
-        edgerc_section = os.environ['EDGERC_SECTION']
-except KeyError:
-    edgerc_section = "default"
+## EAA_CLIENT_SUPPORT
+disable_eaa_client_support = my_args.disable_client_support
+akalog.debug(f"DISABLE_EAA_CLIENT_SUPPORT has been set to '{my_args.disable_client_support}'")
 
-# EDGERC FILE
-try:
-    edgerc = os.environ['EDGERC']
-except KeyError:
-    edgerc = "/opt/akamai/.edgerc"
+## EDGERC FILE
+edgerc = my_args.edgerc_file
+akalog.debug(f"EDGERC (file location) has been set to '{edgerc}'")
+### Verify it is a file
+if not os.path.isfile(edgerc):
+    akalog.critical(f"EDGERC file '{edgerc}' does not exist. Cannot continue without ! - exiting")
+    sys.exit(1)
 
-# NETWORK MODE
-try:
-    network_mode = os.environ.get('NETWORK_MODE')
-except KeyError:
-    network_mode = "bridge"
+## EDFGERC Section
+edgerc_section = my_args.edgerc_section
+akalog.debug(f"EDGERC_SECTION has been set to '{edgerc_section}'")
+
+## NETWORK MODE
+network_mode = my_args.network_mode
+akalog.debug(f"NETWORK_MODE has been set to '{network_mode}'")
+
 
 
 
