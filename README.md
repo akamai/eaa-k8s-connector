@@ -20,6 +20,8 @@ Fully automated setup of a "long lived" EAA Connector within:
 | CONNECTOR_NAME             | $HOSTNAME             | The Connector name                                                                                                                      |
 | DISABLE_EAA_CLIENT_SUPPORT | True                  | Disabling EAA Client support by removing additional capabilities <br>Set to "True" to disable.                                          | 
 | NETWORK_MODE               | bridge                | Specify the desired network mode for the EAA CONNECTOR CONTAINER (Only use in DOCKER ENV) [bridge,none,container:<name\|id>,host,ports] | 
+| EKC_TEMP_DIR               | /tmp                  | The default tmp dir to store the container image to - needs to provide ~ 20GB of space                                                  |
+
 
 # Deployments
 ## Kubernetes

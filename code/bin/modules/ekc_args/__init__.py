@@ -47,8 +47,8 @@ def init():
                           type=str,
                           default=(os.environ.get('CONNECTOR_NAME') or f"{default_config.default_connector_name_prefix}-{hostname_random_part}"),
                           help=f"Connector Name. (Default: {default_config.default_connector_name_prefix}-{hostname_random_part}) - randomly generated\n"
-                               f"ENV_VAR: CONNECTOR_NAME",
-                          )
+                               f"ENV_VAR: CONNECTOR_NAME"
+                           )
 
     ekc_group.add_argument('--disable_client_support',
                           action='store',
@@ -57,7 +57,7 @@ def init():
                           default=(os.environ.get('DISABLE_EAA_CLIENT_SUPPORT') or f"{default_config.disable_client_support}"),
                           help=f"Disable the EAA Connector client support (Default: {default_config.disable_client_support})\n"
                                f"ENV_VAR: DISABLE_EAA_CLIENT_SUPPORT",
-                          )
+                           )
 
     ekc_group.add_argument('--network_mode',
                           action='store',
@@ -65,21 +65,30 @@ def init():
                           type=bool,
                           default=(os.environ.get('NETWORK_MODE') or f"{default_config.default_network_mode}"),
                           help=f"Disable the EAA Connector client support (Default: {default_config.default_network_mode})\n"
-                               f"ENV_VAR: NETWORK_MODE",
-                          )
+                               f"ENV_VAR: NETWORK_MODE"
+                           )
+
+    ekc_group.add_argument('--temp_dir',
+                           action='store',
+                           dest='temp_dir',
+                           type=str,
+                           default=(os.environ.get('EKC_TEMP_DIR') or f"{default_config.default_temp_dir}"),
+                           help=f"Disable the EAA Connector client support (Default: {default_config.default_temp_dir})\n"
+                                f"ENV_VAR: EKC_TEMP_DIR"
+                           )
 
     # EDGERC STUFF
     edgerc_group = parser.add_argument_group(title="EDGERC Configuration",
                                              description="Configure the EDGERC Settings")
 
     edgerc_group.add_argument('--edgerc_file',
-                          action='store',
-                          dest='edgerc_file',
-                          type=str,
-                          default=(os.environ.get('EDGERC') or f"{default_config.default_edgerc_file}"),
-                          help=f"The location of the edgerc file. (Default: {default_config.default_edgerc_file})\n"
-                               f"ENV_VAR: EDGERC",
-                          )
+                              action='store',
+                              dest='edgerc_file',
+                              type=str,
+                              default=(os.environ.get('EDGERC') or f"{default_config.default_edgerc_file}"),
+                              help=f"The location of the edgerc file. (Default: {default_config.default_edgerc_file})\n"
+                                   f"ENV_VAR: EDGERC"
+                              )
 
     edgerc_group.add_argument('--edgerc_section',
                           action='store',

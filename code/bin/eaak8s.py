@@ -46,7 +46,9 @@ if my_args.version:
     sys.exit(0)
 
 # Loading the Variables
-local_tmp_con_file = '/tmp/connector.tar.gz'
+## TEMP DIR
+local_tmp_con_file = f"{my_args.temp_dir}/connector.tar.gz"
+akalog.debug(f"EKC_TEMP_DIR has been set to '{my_args.temp_dir}' - resulting in the tmp con file: {local_tmp_con_file}")
 
 ## Connector name
 connector_name = my_args.connector_name
@@ -77,7 +79,6 @@ akalog.debug(f"NETWORK_MODE has been set to '{network_mode}'")
 
 
 
-
 # Instanciate the worker classes
 myAkaApi = aka_api.AkaApi(edgerc_section=edgerc_section, edgerc=edgerc)
 myDocker = Docker.AkaDocker()
@@ -105,12 +106,29 @@ def check_return(retvar, connector_id: str=None):
         time.sleep(600)
         sys.exit(1)
 
+def check_free_local_space(path=None):
+    my_stats = os.statvfs(path)
+    bytes_avail = (my_stats.f_bavail * my_stats.f_frsize)
+    gb_avail = bytes_avail / 1024 / 1024 / 1024
+    return int(gb_avail)
 
 def new_connector():
     """
     The process creates a new connector on {OPEN} API and on the docker hostvui
     :return:
     """
+    # Checking Free space in our tmp dir (this caused an issue earlier ...)
+        # does the directory exist
+    akalog.info(f"Testing for sufficent free space (~20GB) in '{my_args.temp_dir}'")
+    if not os.path.exists(my_args.temp_dir):
+        akalog.critical(f"The tmp path '{my_args.temp_dir}' does not exist. Cannot continue without ! - exiting")
+        sys.exit(1)
+
+        # do we have enough space
+    if check_free_local_space(my_args.temp_dir) < 20:
+        akalog.critical(f"Free space on '{my_args.temp_dir}' is less than 20G. We cannot build a connector here - exiting")
+        time.sleep(600)
+        sys.exit(1)
 
     # Test the connection to OpenAPI
     akalog.info(f"Testing Connection to AKAMAI {{OPEN}}API")
@@ -129,7 +147,6 @@ def new_connector():
     if running:
         akalog.critical(f"A container hosting the desried connnector is already running: {running} - exiting")
         return False
-
 
     # EME-835 - We should check online, if there is already a connector online with the same name
     # And also check the state of the connector
@@ -178,6 +195,12 @@ def new_connector():
     check_return(docker_load)
     image = myDocker.search_image(connector_image_name)
     check_return(retvar=image, connector_id=connector_id)
+    # Eventually we should also clean up the download file !!!
+    try:
+        os.remove("demofile.txt")
+    except OSError as error:
+        akalog.warning(f"Was not able to remove file '{local_tmp_con_file}' - Error: {error}")
+
 
     # CREATE A VOLUME
     akalog.info(f"Creating a docker volume")

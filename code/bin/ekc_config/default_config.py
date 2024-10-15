@@ -8,7 +8,7 @@ default_connector_name_prefix = "EKC"
 default_connector_random_size = 10
 default_network_mode = "bridge"
 disable_client_support = True
-
+default_temp_dir = "/tmp"
 
 # EDGERC
 default_edgerc_file = "/opt/akamai/.edgerc"
