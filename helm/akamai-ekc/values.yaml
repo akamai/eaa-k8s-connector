@@ -10,11 +10,12 @@ akamai:
       name: "akamai-edgerc"
     config:
       disable_tcp_client_support: "True"
+      loglevel: "DEBUG"
 
 images:
   ekc:
     repository: akamai/eaa-k8s-connector
-    tag: latest
+    tag: testing
     pullPolicy: Always
   dind:
     repository: docker

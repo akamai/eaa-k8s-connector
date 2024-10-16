@@ -10,6 +10,7 @@
 - dropped old way of reading ENV vars in favor of ARGSPARSER - VAR NAMES stayes the same
 - Added a "Free Space Check" into EKC to avoid running wild if we don't have enough space to download the connector
 - Removing Connector download file after loading it into docker 
+- fixed a bug in handling the client_support
 
 ## 0.0.10
 |||

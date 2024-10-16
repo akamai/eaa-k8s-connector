@@ -197,7 +197,7 @@ def new_connector():
     check_return(retvar=image, connector_id=connector_id)
     # Eventually we should also clean up the download file !!!
     try:
-        os.remove("demofile.txt")
+        os.remove(local_tmp_con_file)
     except OSError as error:
         akalog.warning(f"Was not able to remove file '{local_tmp_con_file}' - Error: {error}")
 
@@ -209,7 +209,7 @@ def new_connector():
 
     # Start the connector (mounting the above volume)
     akalog.info(f"Starting the new connector within docker")
-    if not disable_eaa_client_support or disable_eaa_client_support.lower() == 'false':
+    if not disable_eaa_client_support:
         akalog.info(f"Client Support has been enabled for this connector - applying corresponding settings")
         connector_caps = ["NET_ADMIN", "NET_RAW"]
         volumes = [f"{connector_name}-vol:/opt/wapp", "/lib/modules:/lib/modules"]
@@ -233,10 +233,10 @@ def new_connector():
     while counter <= 5:
         con_state = myAkaApi.list_connector(connector_id=connector_id)['state']
         check_return(con_state)
-        akalog.debug(f"State: {con_state} (Needs to be \'3\' to proceed)")
+        akalog.debug(f"State: {con_state} (Needs to be \'3\' to proceed) - no worries - we will try this again, soon !")
         if con_state == 3:
             break
-        time.sleep(60)
+        time.sleep(time_wait)
         counter = counter + 1
     if not con_state == 3:
         akalog.critical(f"Connector state did not turn ready within {retries} attempts (slept {time_wait}s in between - exiting")

@@ -17,14 +17,18 @@
 
 import docker
 import logging
+import sys
 
 class AkaDocker:
     def __init__(self):
         # Instanciate logging
         self.akalog = logging.getLogger("ekc.AkaDocker")
         self.akalog.info("loaded")
-
-        self.client = docker.from_env(timeout=3600)
+        try:
+            self.client = docker.from_env(timeout=3600)
+        except docker.errors.TLSParameterError:
+            self.akalog.critical("TLS connection to docker failed - cant continue - exiting")
+            sys.exit(1)
 
     def get_version(self):
         self.akalog.debug(f"Fetching Docker Server version")

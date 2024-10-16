@@ -33,6 +33,8 @@ spec:
               value: "True"
             - name: DISABLE_EAA_CLIENT_SUPPORT
               value: "{{ .Values.akamai.eaaConnector.config.disable_tcp_client_support }}"
+            - name: EKC_LOGLEVEL
+              value: "{{ .Values.akamai.eaaConnector.config.loglevel }}"
           volumeMounts:
             - name: akamai-edgerc
               mountPath: /opt/akamai/.edgerc

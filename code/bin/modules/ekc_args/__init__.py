@@ -62,7 +62,7 @@ def init():
     ekc_group.add_argument('--network_mode',
                           action='store',
                           dest='network_mode',
-                          type=bool,
+                          type=str,
                           default=(os.environ.get('NETWORK_MODE') or f"{default_config.default_network_mode}"),
                           help=f"Disable the EAA Connector client support (Default: {default_config.default_network_mode})\n"
                                f"ENV_VAR: NETWORK_MODE"
