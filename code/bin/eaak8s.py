@@ -146,7 +146,8 @@ def new_connector():
     running = myDocker.container_running_by_name(containername=f"{connector_name}-con")
     if running:
         akalog.critical(f"A container hosting the desried connnector is already running: {running} - exiting")
-        return False
+        sys.exit(1)
+        #return False
 
     # EME-835 - We should check online, if there is already a connector online with the same name
     # And also check the state of the connector

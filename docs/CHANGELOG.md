@@ -1,16 +1,17 @@
 # Version History
 
 ## 0.0.11
-|        |                       |
-|--------|-----------------------|
-| Date   | 2024-10-xx            |
-| Kind   | Feature release       |
-| Author | mschiess@akamai.com   |  
+|        |                     |
+|--------|---------------------|
+| Date   | 2024-10-17          |
+| Kind   | Feature release     |
+| Author | mschiess@akamai.com |  
 **BugFixes**
 - dropped old way of reading ENV vars in favor of ARGSPARSER - VAR NAMES stayes the same
 - Added a "Free Space Check" into EKC to avoid running wild if we don't have enough space to download the connector
 - Removing Connector download file after loading it into docker 
 - fixed a bug in handling the client_support
+- fixed a bug not properly halting when a container already exists 
 
 ## 0.0.10
 |||
