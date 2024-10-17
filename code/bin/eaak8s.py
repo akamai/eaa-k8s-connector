@@ -145,7 +145,11 @@ def new_connector():
     #running = myDocker.container_running()
     running = myDocker.container_running_by_name(containername=f"{connector_name}-con")
     if running:
-        akalog.critical(f"A container hosting the desried connnector is already running: {running} - exiting")
+        akalog.critical(f"A container hosting the desried connnector is already running: {running} ")
+        akalog.critical(f"If you can read this line, there is nothing left to do for me ... i am sleeping ")
+        akalog.debug(f"This means, we actually have nothing to do and we can sleep for a long time (~6h) ... (and exit afterwards")
+
+        time.sleep(60 * 60 * 6)
         sys.exit(1)
         #return False
 
