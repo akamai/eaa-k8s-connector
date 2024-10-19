@@ -45,10 +45,13 @@ def init():
                           action='store',
                           dest='connector_name',
                           type=str,
-                          default=(os.environ.get('CONNECTOR_NAME') or f"{default_config.default_connector_name_prefix}-{hostname_random_part}"),
-                          help=f"Connector Name. (Default: {default_config.default_connector_name_prefix}-{hostname_random_part}) - randomly generated\n"
-                               f"ENV_VAR: CONNECTOR_NAME"
+                          default=(os.environ.get('CONNECTOR_NAME') or (os.environ.get('HOSTNAME'))),
+                          help=f"Connector Name. (Default: hostname {os.environ.get('HOSTNAME')}"
+                               " ENV_VAR: CONNECTOR_NAME"
                            )
+
+#                          default=(os.environ.get('CONNECTOR_NAME') or f"{default_config.default_connector_name_prefix}-{hostname_random_part}"),
+                          #help=f"Connector Name. (Default: {default_config.default_connector_name_prefix}-{hostname_random_part}) - randomly generated\n"
 
     ekc_group.add_argument('--disable_client_support',
                           action='store',

@@ -12,6 +12,7 @@
 - Removing Connector download file after loading it into docker 
 - fixed a bug in handling the client_support
 - fixed a bug not properly halting when a container already exists 
+- fixed a bug that resulted in using the wrong container hostname
 
 ## 0.0.10
 |||
