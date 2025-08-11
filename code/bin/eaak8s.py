@@ -21,7 +21,7 @@ import time
 import logging
 
 #import modules.eaaK8sConfig as eaaK8sConfig
-import modules.ekc_config.default_config as default_config
+import ekc_config.default_config as default_config
 import modules.aka_api as aka_api
 import modules.aka_docker as Docker
 import modules.ekc_args as args
@@ -151,14 +151,14 @@ def new_connector():
     running = myDocker.container_running_by_name(containername=f"{connector_name}-con")
     if running:
         akalog.critical(f"A container hosting the desried connnector is already running: {running} ")
-        akalog.critical(f"If you can read this line, there is nothing left to do for me ... i am sleeping ")
-        akalog.debug(f"This means, we actually have nothing to do and we can sleep for a long time (~6h) ... (and exit afterwards")
+        akalog.critical(f"If you can read this line, there is nothing left to do for me ... i am sleeping for ({ default_config.default_ok_sleep_time / 60 / 60 } hours)")
+        akalog.debug(f"This means, we actually have nothing to do and we can sleep for a long time ({ default_config.default_ok_sleep_time / 60 / 60 } hours) ... (and exit afterwards")
 
         #time.sleep(60 * 60 * 6)
         time.sleep(default_config.default_ok_sleep_time)
         # 20250811 - no more exits
         #sys.exit(1)
-        raise(f"This means, we actually have nothing to do and we can sleep for a long time (~6h) ... (and throw an excemption afterwards=")
+        raise(f"This means, we actually have nothing to do and we can sleep for a long time ({ default_config.default_ok_sleep_time / 60 / 60 } hours) ... (and throw an excemption afterwards=")
         #return False
 
     # EME-835 - We should check online, if there is already a connector online with the same name
@@ -280,5 +280,5 @@ if __name__ == "__main__":
             new_connector()
             time.sleep(60)
         except Exception as error:
-            print(f"An error occurred: {error}")
+            print(f"An exit in the main loop occurred. Reason: {error}")
             time.sleep(60)
