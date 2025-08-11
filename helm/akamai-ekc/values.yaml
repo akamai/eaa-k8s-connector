@@ -21,7 +21,7 @@ images:
     repository: docker
     #tag: 20.14-dind
     tag: dind
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
 
 
 podAnnotations: {}

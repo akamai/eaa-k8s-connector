@@ -21,6 +21,7 @@ import time
 import logging
 
 #import modules.eaaK8sConfig as eaaK8sConfig
+import modules.ekc_config.default_config as default_config
 import modules.aka_api as aka_api
 import modules.aka_docker as Docker
 import modules.ekc_args as args
@@ -104,7 +105,9 @@ def check_return(retvar, connector_id: str=None):
 
         akalog.critical(f"Error Occured in previous step. Received: {retvar} - exiting")
         time.sleep(600)
-        sys.exit(1)
+        # 20250811 - no more exits
+        #sys.exit(1)
+        raise(f"Error Occured in previous step. Received: {retvar} - exiting")
 
 def check_free_local_space(path=None):
     my_stats = os.statvfs(path)
@@ -122,13 +125,15 @@ def new_connector():
     akalog.info(f"Testing for sufficent free space (~20GB) in '{my_args.temp_dir}'")
     if not os.path.exists(my_args.temp_dir):
         akalog.critical(f"The tmp path '{my_args.temp_dir}' does not exist. Cannot continue without ! - exiting")
-        sys.exit(1)
+        raise(f"The tmp path '{my_args.temp_dir}' does not exist. Cannot continue without ! - exiting")
 
         # do we have enough space
     if check_free_local_space(my_args.temp_dir) < 20:
         akalog.critical(f"Free space on '{my_args.temp_dir}' is less than 20G. We cannot build a connector here - exiting")
         time.sleep(600)
-        sys.exit(1)
+        # 20250811 - no more exits
+        #sys.exit(1)
+        raise(f"Free space on '{my_args.temp_dir}' is less than 20G. We cannot build a connector here - exiting")
 
     # Test the connection to OpenAPI
     akalog.info(f"Testing Connection to AKAMAI {{OPEN}}API")
@@ -149,8 +154,11 @@ def new_connector():
         akalog.critical(f"If you can read this line, there is nothing left to do for me ... i am sleeping ")
         akalog.debug(f"This means, we actually have nothing to do and we can sleep for a long time (~6h) ... (and exit afterwards")
 
-        time.sleep(60 * 60 * 6)
-        sys.exit(1)
+        #time.sleep(60 * 60 * 6)
+        time.sleep(default_config.default_ok_sleep_time)
+        # 20250811 - no more exits
+        #sys.exit(1)
+        raise(f"This means, we actually have nothing to do and we can sleep for a long time (~6h) ... (and throw an excemption afterwards=")
         #return False
 
     # EME-835 - We should check online, if there is already a connector online with the same name
@@ -179,7 +187,9 @@ def new_connector():
 
     if not my_connector['download_url']:
         akalog.critical("No Download URL received, i am giving up now ... - exiting !")
-        sys.exit(1)
+        # 20250811 - no more exits
+        #sys.exit(1)
+        raise ("No Download URL received, i am giving up now ...")
     # /EME-835
 
 
@@ -246,7 +256,9 @@ def new_connector():
     if not con_state == 3:
         akalog.critical(f"Connector state did not turn ready within {retries} attempts (slept {time_wait}s in between - exiting")
         check_return(retvar=False, connector_id=connector_id)
-        sys.exit(1)
+        # 20250811 - no more exits
+        #sys.exit(1)
+        raise(f"Connector state did not turn ready within {retries} attempts (slept {time_wait}s in between")
 
     # Approve the Connector
     akalog.info(f"Approving the newly started connector on AKAMAI {{OPEN}}API")
@@ -264,5 +276,9 @@ def new_connector():
 
 if __name__ == "__main__":
     while True:
-        new_connector()
-        time.sleep(60)
+        try:
+            new_connector()
+            time.sleep(60)
+        except Exception as error:
+            print(f"An error occurred: {error}")
+            time.sleep(60)
