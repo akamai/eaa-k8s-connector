@@ -1,5 +1,15 @@
 # Version History
 
+## 0.0.13
+|        |                  |
+|--------|------------------|
+| Date   | 2025-08-         |
+| Kind   | Minor release    |
+| Author | mschiess@akamai.com | 
+
+**Updates**
+- Implemented a fix to handler older versions of EKC properly
+
 ## 0.0.12
 |        |                     |
 |--------|---------------------|

@@ -149,6 +149,10 @@ def new_connector():
     akalog.info(f"Checking if a container with a connector is already running")
     #running = myDocker.container_running()
     running = myDocker.container_running_by_name(containername=f"{connector_name}-con")
+    if not running:
+        # Lets check if some old fashioned EKC is still hitting things ...
+        running = myDocker.container_running_by_name(containername=f"eaa-k8s-con")
+
     if running:
         akalog.critical(f"A container hosting the desried connnector is already running: {running} ")
         akalog.critical(f"If you can read this line, there is nothing left to do for me ... i am sleeping for ({ default_config.default_ok_sleep_time / 60 / 60 } hours)")
