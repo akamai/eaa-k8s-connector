@@ -1,5 +1,29 @@
 # Version History
 
+## 0.0.13
+|        |                     |
+|--------|---------------------|
+| Date   | 2025-08-13          |
+| Kind   | Minor release       |
+| Author | mschiess@akamai.com | 
+
+**Updates**
+- Implemented a fix to handler older versions of EKC properly
+
+## 0.0.12
+|        |                     |
+|--------|---------------------|
+| Date   | 2025-08-11          |
+| Kind   | Minor release       |
+| Author | mschiess@akamai.com | 
+
+**Updates**
+- Updated the python container from 3.12 to 3.13 (this should tackle some security flaws)
+- Changed "DIND" PullPolicy to "Always" in order to maintain a secure posture
+- Changed "sleep time" if all is up & running to 1 week
+
+
+
 ## 0.0.11
 |        |                     |
 |--------|---------------------|
