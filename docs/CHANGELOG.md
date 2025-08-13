@@ -1,10 +1,10 @@
 # Version History
 
 ## 0.0.13
-|        |                  |
-|--------|------------------|
-| Date   | 2025-08-         |
-| Kind   | Minor release    |
+|        |                     |
+|--------|---------------------|
+| Date   | 2025-08-13          |
+| Kind   | Minor release       |
 | Author | mschiess@akamai.com | 
 
 **Updates**
