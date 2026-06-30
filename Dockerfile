@@ -1,4 +1,4 @@
-FROM            python:3.13-slim-bullseye
+FROM            python:3-slim-bullseye
 LABEL 	        MAINTAINER="Mike Schiessl - mike.schiessl@akamai.com"
 LABEL	        APP_LONG="EAA kubernetes Connector"
 LABEL           APP_SHORT="EKC"
