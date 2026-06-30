@@ -3,5 +3,5 @@ name: akamai-ekc
 description: Akamai EAA Kubernetes Connector
 
 type: application
-version: 0.0.13
-appVersion: 0.0.13
+version: 0.0.14
+appVersion: 0.0.14
