@@ -1,5 +1,17 @@
 # Version History
 
+## 0.0.14
+|        |                     |
+|--------|---------------------|
+| Date   | 2026-06-30          |
+| Kind   | Minor release       |
+| Author | mschiess@akamai.com | 
+
+**Updates**
+- Updated docker image version
+- Updated requirements
+
+
 ## 0.0.13
 |        |                     |
 |--------|---------------------|
